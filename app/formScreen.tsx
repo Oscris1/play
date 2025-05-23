@@ -11,13 +11,21 @@ const validationSchema = Yup.object().shape({
 })
 
 const FormScreen = () => {
-  const { control, handleSubmit, formState: { errors }, clearErrors, reset } = useForm({
-    resolver: yupResolver(validationSchema),
-    mode: 'onSubmit',
-    reValidateMode: 'onSubmit',
-  })
+  const { 
+      control, 
+      handleSubmit, 
+      formState: { errors }, 
+      clearErrors, 
+      reset,
+      watch 
+    } = useForm({
+      resolver: yupResolver(validationSchema),
+      mode: 'onSubmit',
+      reValidateMode: 'onSubmit',
+    })
 
   const [message, setMessage] = useState('')
+  const disabled = !watch('name') || !watch('email')
 
   useEffect(() => {
     if (message) {
@@ -76,7 +84,13 @@ const FormScreen = () => {
             </YStack>
           )}
         />
-        <Button theme="blue" w="100%" onPress={handleSubmit(onSubmit)}>Wyslij</Button>
+        <Button 
+          theme={disabled ? 'dark' : 'blue'} 
+          w="100%" 
+          onPress={handleSubmit(onSubmit)} 
+          disabled={disabled}>
+            Wyslij
+        </Button>
 
         {message && <Text>{message}</Text>}
       </YStack>
