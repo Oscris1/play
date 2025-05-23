@@ -62,6 +62,7 @@ const FormScreen = () => {
           render={({ field: { onChange, onBlur, value } }) => (
             <YStack w="100%" gap={4}>
             <Input
+              autoCapitalize="none"
               w="100%"
               onChangeText={(text) => { 
                 onChange(text)
