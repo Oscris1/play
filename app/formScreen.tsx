@@ -1,5 +1,5 @@
 import { Stack } from "expo-router"
-import { Button, Input, YStack } from "tamagui"
+import { Button, Input, YStack, Text } from "tamagui"
 import * as Yup from 'yup'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -13,6 +13,8 @@ const validationSchema = Yup.object().shape({
 const FormScreen = () => {
   const { control, handleSubmit, formState: { errors }, clearErrors, reset } = useForm({
     resolver: yupResolver(validationSchema),
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
   })
 
   const [message, setMessage] = useState('')
@@ -31,9 +33,10 @@ const FormScreen = () => {
           control={control}
           name="name"
           render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              w="100%"
-              onChangeText={(text) => {
+            <YStack w="100%" gap={4}>
+              <Input
+                w="100%"
+                onChangeText={(text) => {
                 onChange(text)
                 clearErrors('name')
               }}
@@ -41,12 +44,15 @@ const FormScreen = () => {
               value={value}
               placeholder="Imię"
             />
+            {errors.name && <Text color="red">{errors.name.message}</Text>}
+            </YStack>
           )}
         />
         <Controller
           control={control}
           name="email"
           render={({ field: { onChange, onBlur, value } }) => (
+            <YStack w="100%" gap={4}>
             <Input
               w="100%"
               onChangeText={(text) => { 
@@ -57,6 +63,8 @@ const FormScreen = () => {
               value={value}
               placeholder="Email"
             />
+            {errors.email && <Text color="red">{errors.email.message}</Text>}
+            </YStack>
           )}
         />
         <Button theme="blue" w="100%" onPress={handleSubmit(onSubmit)}>Wyslij</Button>
