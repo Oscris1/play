@@ -3,7 +3,7 @@ import { Button, Input, YStack, Text } from "tamagui"
 import * as Yup from 'yup'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(5, 'Imię musi mieć co najmniej 5 znaków').required('Imię jest wymagane'),
@@ -18,6 +18,14 @@ const FormScreen = () => {
   })
 
   const [message, setMessage] = useState('')
+
+  useEffect(() => {
+    if (message) {
+      setTimeout(() => {
+        setMessage('')
+      }, 3000)
+    }
+  }, [message])
 
   const onSubmit = (data: { name: string, email: string }) => {
     console.log(data)
@@ -68,6 +76,8 @@ const FormScreen = () => {
           )}
         />
         <Button theme="blue" w="100%" onPress={handleSubmit(onSubmit)}>Wyslij</Button>
+
+        {message && <Text>{message}</Text>}
       </YStack>
     </>
   )
