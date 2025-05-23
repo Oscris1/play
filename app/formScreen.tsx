@@ -1,8 +1,9 @@
 import { Stack } from "expo-router"
-import { Input, YStack } from "tamagui"
+import { Button, Input, YStack } from "tamagui"
 import * as Yup from 'yup'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useState } from "react"
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(5, 'Imię musi mieć co najmniej 5 znaków').required('Imię jest wymagane'),
@@ -10,9 +11,17 @@ const validationSchema = Yup.object().shape({
 })
 
 const FormScreen = () => {
-  const { control, handleSubmit, formState: { errors }, clearErrors } = useForm({
+  const { control, handleSubmit, formState: { errors }, clearErrors, reset } = useForm({
     resolver: yupResolver(validationSchema),
   })
+
+  const [message, setMessage] = useState('')
+
+  const onSubmit = (data: { name: string, email: string }) => {
+    console.log(data)
+    setMessage('Dziękujemy, dane zapisane!')
+    reset()
+  }
 
   return (
     <>
@@ -50,6 +59,7 @@ const FormScreen = () => {
             />
           )}
         />
+        <Button theme="blue" w="100%" onPress={handleSubmit(onSubmit)}>Wyslij</Button>
       </YStack>
     </>
   )
