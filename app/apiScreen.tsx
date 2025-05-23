@@ -11,10 +11,10 @@ const ApiScreen = () => {
       <YStack 
         flex={1} 
         alignItems="center" 
-        justifyContent="center" 
         backgroundColor="white" 
         gap={16} 
         padding={16}
+        paddingTop={32}
         width="100%"
         >
           {error && <Text>Błąd: {error.message}</Text>}
